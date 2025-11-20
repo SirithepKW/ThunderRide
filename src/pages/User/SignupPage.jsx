@@ -6,9 +6,11 @@ import AppleIcon from "@mui/icons-material/Apple";
 export default function SignupPage({ email, setEmail, onNext }) {
   return (
     <Box textAlign="center">
+      {/* หัวข้อ */}
       <Typography sx={{ fontSize: 16, fontWeight: 500, mb: 2, mt: 8, textAlign: "left" }}>
         What’s your phone number or email?
       </Typography>
+      {/* ช่องกรอกข้อความ */}
       <TextField
         fullWidth
         label="Phone number or email"
@@ -17,23 +19,27 @@ export default function SignupPage({ email, setEmail, onNext }) {
         onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
       />
+
+      {/* ปุ่ม continue */}
       <Button
         fullWidth
         variant="contained"
         color="primary"
-        disabled={!email}
+        disabled={!email} //ถ้ายังไม่กรอก email กดไปุ่มไม่ได้
         onClick={onNext}
         sx={{ mb: 2 }}
       >
         Continue
       </Button>
 
+      {/* เส้นคั่น or  */}
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <Box sx={{ flex: 1, height: "1px", bgcolor: "grey.400" }} />
         <Typography sx={{ mx: 2, fontSize: 14, color: "grey.600" }}>or</Typography>
         <Box sx={{ flex: 1, height: "1px", bgcolor: "grey.400" }} />
       </Box>
 
+      {/* ปุ่มลอคอินแบบอื่น */}
       <Button
         fullWidth
         variant="contained"
