@@ -1,7 +1,7 @@
 import React from "react";
-import AppFooter from '../../../components/User/Passenger/AppFooter';
-import AppHeader from '../../../components/User/Passenger/AppHeader';
-import AppNavbar from '../../../components/User/Passenger/AppNavbar';
+import AppFooter from '../../components/AppFooter';
+import AppHeader from '../../components/AppHeader';
+import AppNavbar from '../../components/AppNavbar';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const ProfilePage = () => <h2>Welcome to your Profile!</h2>;

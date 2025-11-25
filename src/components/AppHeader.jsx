@@ -9,22 +9,53 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
 const AppHeader = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
 
-  const handleUserClick = async () => {
-    try {
-      const response = await fetch("https://your-api.com/api/user");
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-      const data = await response.json();
-      console.log("User data:", data);
+  // ตรวจสอบสถานะ login จาก localStorage เมื่อ component mount
+  React.useEffect(() => {
+    const checkLoginStatus = () => {
+      const loginStatus = localStorage.getItem('isLoggedIn');
+      setIsLoggedIn(loginStatus === 'true');
+    };
+
+    // ตรวจสอบครั้งแรก
+    checkLoginStatus();
+
+    // ฟังการเปลี่ยนแปลงใน localStorage (สำหรับกรณีที่ login จากหน้าอื่น)
+    const handleStorageChange = (e) => {
+      if (e.key === 'isLoggedIn') {
+        setIsLoggedIn(e.newValue === 'true');
+      }
+    };
+
+    // ฟัง custom event สำหรับกรณีที่ login ในหน้าเดียวกัน
+    const handleLoginStatusChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('loginStatusChanged', handleLoginStatusChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('loginStatusChanged', handleLoginStatusChange);
+    };
+  }, []);
+
+  const handleUserClick = () => {
+    if (isLoggedIn) {
+      // ถ้า login แล้วให้ไปหน้า profile
       navigate("/profile");
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
+    } else {
+      // ถ้ายังไม่ได้ login ให้ไปหน้า login
+      navigate("/login");
     }
   };
 
@@ -68,23 +99,38 @@ const AppHeader = () => {
               </Box>
             </Typography>
 
-            {/* ปุ่ม USER */}
-            <Button
-              variant="outlined"
-              onClick={handleUserClick}
-              sx={{
-                color: "black",
-                borderColor: "white",
-                borderRadius: "20px",
-                backgroundColor: "white",
-                textTransform: "none",
-                fontWeight: "bold",
-                px: 2,
-                py: 0.5,
-              }}
-            >
-              USER
-            </Button>
+            {/* ปุ่ม LOGIN/Notification */}
+            {isLoggedIn ? (
+              <IconButton
+                onClick={() => navigate("/notifications")}
+                sx={{
+                  color: "white",
+                  backgroundColor: "transparent",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+              >
+                <NotificationsIcon sx={{ fontSize: 28 }} />
+              </IconButton>
+            ) : (
+              <Button
+                variant="outlined"
+                onClick={handleUserClick}
+                sx={{
+                  color: "black",
+                  borderColor: "white",
+                  borderRadius: "20px",
+                  backgroundColor: "white",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  px: 2,
+                  py: 0.5,
+                }}
+              >
+                LOGIN
+              </Button>
+            )}
 
             {/* ปุ่ม Toggle เมนู */}
             <IconButton
@@ -149,7 +195,7 @@ const AppHeader = () => {
                 Ride
               </Button>
 
-              <IconButton
+              {/* <IconButton
                 size="medium" // ทำให้ปุ่มใหญ่ขึ้น
                 sx={{
                   // bgcolor: "#ffff",
@@ -162,9 +208,9 @@ const AppHeader = () => {
                   navigate("/notifications");
                 }}
               >
-                <NotificationsIcon sx={{ fontSize: 25 }} /> {/* ขนาดไอคอนปรับเองได้ */}
+                <NotificationsIcon sx={{ fontSize: 25 }} /> ขนาดไอคอนปรับเองได้ */}
                 {/* ปรับขนาดไอคอน */}
-              </IconButton>
+              {/* </IconButton> */}
             </Box>
 
             <Button
@@ -197,7 +243,11 @@ const AppHeader = () => {
                 }}
                 onClick={() => {
                   setShowMenu(false);
-                  navigate("/profile");
+                  if (isLoggedIn) {
+                    navigate("/profile");
+                  } else {
+                    setShowLoginModal(true);
+                  }
                 }}
               >
                 Profile
@@ -265,6 +315,99 @@ const AppHeader = () => {
           </Box>
         </Box>
       </Slide>
+
+      {/* Login Required Modal */}
+      {showLoginModal && (
+        <Box 
+          sx={{ 
+            position: "fixed", 
+            top: 0, 
+            left: 0, 
+            width: "100%", 
+            height: "100%", 
+            bgcolor: "rgba(0,0,0,0.7)", 
+            display: "flex", 
+            justifyContent: "center", 
+            alignItems: "center", 
+            zIndex: 10001,
+            backdropFilter: "blur(4px)"
+          }}
+        >
+          <Box 
+            sx={{ 
+              backgroundColor: "white", 
+              borderRadius: 3, 
+              p: 4, 
+              width: "90%", 
+              maxWidth: 400, 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: 2,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.3)"
+            }}
+          >
+            <Box 
+              sx={{ 
+                width: 80, 
+                height: 80, 
+                borderRadius: "50%", 
+                bgcolor: "#FFF3C4", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                mb: 1
+              }}
+            >
+              <PersonIcon sx={{ fontSize: 50, color: "#ECBD35" }} />
+            </Box>
+            <Typography sx={{ fontSize: 24, fontWeight: "bold", color: "#000", textAlign: "center" }}>
+              ต้องเข้าสู่ระบบ
+            </Typography>
+            <Typography sx={{ fontSize: 16, color: "#666", textAlign: "center", mt: 1 }}>
+              กรุณาเข้าสู่ระบบเพื่อดูข้อมูลโปรไฟล์
+            </Typography>
+            <Box sx={{ display: "flex", gap: 2, width: "100%", mt: 2 }}>
+              <Button 
+                fullWidth 
+                variant="outlined"
+                onClick={() => setShowLoginModal(false)}
+                sx={{ 
+                  borderColor: "#ddd",
+                  color: "#666",
+                  fontWeight: "bold",
+                  py: 1.5,
+                  "&:hover": { 
+                    borderColor: "#bbb",
+                    bgcolor: "#f5f5f5"
+                  }
+                }}
+              >
+                ยกเลิก
+              </Button>
+              <Button 
+                fullWidth 
+                variant="contained"
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/login');
+                }}
+                sx={{ 
+                  bgcolor: "#ECBD35", 
+                  color: "#000", 
+                  fontWeight: "bold",
+                  py: 1.5,
+                  "&:hover": { 
+                    bgcolor: "#d3a32e" 
+                  }
+                }}
+              >
+                เข้าสู่ระบบ
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
     </>
   );
 };

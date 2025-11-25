@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -7,15 +7,39 @@ import { useNavigate } from "react-router-dom";
 
 const History = () => {
   const navigate = useNavigate();
+  const [historyItems, setHistoryItems] = useState([]);
 
-  const historyItems = [
-    { name: "Siam Paragon", detail: "20 Sep 2025, 15:53." },
-    { name: "Sripatum University", detail: "20 Sep 2025, 07:53." },
-    { name: "Siam Paragon", detail: "19 Sep 2025, 07:53." },
-    { name: "Central World", detail: "18 Sep 2025, 18:20." },
-    { name: "Don Mueang Airport", detail: "17 Sep 2025, 09:45." },
-    { name: "Bangkok Hospital", detail: "16 Sep 2025, 20:30." },
-  ];
+  // โหลดประวัติการเดินทางจาก localStorage
+  useEffect(() => {
+    const loadHistory = () => {
+      try {
+        const savedHistory = localStorage.getItem('rideHistory');
+        if (savedHistory) {
+          const history = JSON.parse(savedHistory);
+          // เรียงลำดับตามวันที่ล่าสุดก่อน
+          const sortedHistory = history.sort((a, b) => {
+            return new Date(b.timestamp) - new Date(a.timestamp);
+          });
+          setHistoryItems(sortedHistory);
+        }
+      } catch (error) {
+        console.error('Error loading ride history:', error);
+      }
+    };
+
+    loadHistory();
+
+    // ฟัง custom event เมื่อมีการเพิ่มประวัติใหม่
+    const handleHistoryUpdate = () => {
+      loadHistory();
+    };
+
+    window.addEventListener('rideHistoryUpdated', handleHistoryUpdate);
+
+    return () => {
+      window.removeEventListener('rideHistoryUpdated', handleHistoryUpdate);
+    };
+  }, []);
 
   return (
     <Box sx={{ p: 2, bgcolor: "#F7F7F7", minHeight: "100vh" }}>
@@ -43,10 +67,17 @@ const History = () => {
       </Box>
 
       {/* History list */}
-      {historyItems.map((item, index) => (
-        <Box
-          key={index}
-          onClick={() => navigate("/previous")} // ✅ เมื่อกดทั้ง blog จะไปหน้า /previous
+      {historyItems.length === 0 ? (
+        <Box sx={{ textAlign: 'center', py: 5 }}>
+          <Typography sx={{ fontSize: 16, color: '#888' }}>
+            ยังไม่มีประวัติการเดินทาง
+          </Typography>
+        </Box>
+      ) : (
+        historyItems.map((item, index) => (
+          <Box
+            key={item.id || index}
+            onClick={() => navigate("/previous", { state: { rideData: item } })} // ✅ ส่งข้อมูลการเดินทางไปหน้า Previous
           sx={{
             display: "flex",
             alignItems: "center",
@@ -79,12 +110,18 @@ const History = () => {
             />
             <Box>
               <Typography sx={{ fontWeight: "bold", fontSize: 15 }}>
-                {item.name}
+                {item.destination?.address || item.name || "ปลายทาง"}
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                 <AccessTimeIcon sx={{ fontSize: 16, color: "#5D5C5D" }} />
                 <Typography sx={{ fontSize: 14, color: "#5D5C5D" }}>
-                  {item.detail}
+                  {item.detail || item.formattedDate || new Date(item.timestamp).toLocaleString('th-TH', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
                 </Typography>
               </Box>
             </Box>
@@ -112,7 +149,8 @@ const History = () => {
             </Typography>
           </Box>
         </Box>
-      ))}
+        ))
+      )}
     </Box>
   );
 };

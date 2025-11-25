@@ -4,6 +4,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import AppleIcon from '@mui/icons-material/Apple';
+import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
 const ProfileInformation = () => {
@@ -13,24 +14,55 @@ const ProfileInformation = () => {
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [otherGender, setOtherGender] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // ตรวจสอบ login status
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
+      if (!loggedIn) {
+        setShowLoginModal(true);
+      }
+    };
+
+    checkLoginStatus();
+
+    // ฟัง event เมื่อ login status เปลี่ยน
+    const handleLoginStatusChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener('storage', handleLoginStatusChange);
+    window.addEventListener('loginStatusChanged', handleLoginStatusChange);
+
+    return () => {
+      window.removeEventListener('storage', handleLoginStatusChange);
+      window.removeEventListener('loginStatusChanged', handleLoginStatusChange);
+    };
+  }, []);
 
   useEffect(() => {
-    const savedData = localStorage.getItem("profileData");
-    if (savedData) {
-      const { name, phone, email, gender, otherGender } = JSON.parse(savedData);
-      setName(name || "");
-      setPhone(phone || "");
-      setEmail(email || "");
-      setGender(gender || "");
-      setOtherGender(otherGender || "");
-    } else {
-      setName("John Doe");
-      setPhone("000-000-0000");
-      setEmail("xxx@gmail.com");
-      setGender("");
-      setOtherGender("");
+    // โหลดข้อมูล profile เฉพาะเมื่อ login แล้ว
+    if (isLoggedIn) {
+      const savedData = localStorage.getItem("profileData");
+      if (savedData) {
+        const { name, phone, email, gender, otherGender } = JSON.parse(savedData);
+        setName(name || "");
+        setPhone(phone || "");
+        setEmail(email || "");
+        setGender(gender || "");
+        setOtherGender(otherGender || "");
+      } else {
+        setName("John Doe");
+        setPhone("000-000-0000");
+        setEmail("xxx@gmail.com");
+        setGender("");
+        setOtherGender("");
+      }
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const handleSave = () => {
     const data = { name, phone, email, gender, otherGender };
@@ -39,8 +71,128 @@ const ProfileInformation = () => {
     navigate(-1);
   };
 
+  const handleLogout = () => {
+    // Remove login status from localStorage
+    localStorage.removeItem('isLoggedIn');
+    
+    // Dispatch custom event to notify other components (e.g., AppHeader)
+    window.dispatchEvent(new Event('loginStatusChanged'));
+    
+    // Navigate to landing page
+    navigate('/');
+  };
+
   return (
-    <Box sx={{ p: 3, bgcolor: "#F7F7F7", minHeight: "100vh" }}>
+    <Box sx={{ p: 3, bgcolor: "#F7F7F7", minHeight: "100vh", position: "relative" }}>
+      {/* Login Required Modal */}
+      {showLoginModal && (
+        <Box 
+          sx={{ 
+            position: "fixed", 
+            top: 0, 
+            left: 0, 
+            width: "100%", 
+            height: "100%", 
+            bgcolor: "rgba(0,0,0,0.7)", 
+            display: "flex", 
+            justifyContent: "center", 
+            alignItems: "center", 
+            zIndex: 10001,
+            backdropFilter: "blur(4px)"
+          }}
+        >
+          <Box 
+            sx={{ 
+              backgroundColor: "white", 
+              borderRadius: 3, 
+              p: 4, 
+              width: "90%", 
+              maxWidth: 400, 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: 2,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.3)"
+            }}
+          >
+            <Box 
+              sx={{ 
+                width: 80, 
+                height: 80, 
+                borderRadius: "50%", 
+                bgcolor: "#FFF3C4", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                mb: 1
+              }}
+            >
+              <PersonIcon sx={{ fontSize: 50, color: "#ECBD35" }} />
+            </Box>
+            <Typography sx={{ fontSize: 24, fontWeight: "bold", color: "#000", textAlign: "center" }}>
+              ต้องเข้าสู่ระบบ
+            </Typography>
+            <Typography sx={{ fontSize: 16, color: "#666", textAlign: "center", mt: 1 }}>
+              กรุณาเข้าสู่ระบบเพื่อดูข้อมูลโปรไฟล์
+            </Typography>
+            <Box sx={{ display: "flex", gap: 2, width: "100%", mt: 2 }}>
+              <Button 
+                fullWidth 
+                variant="outlined"
+                onClick={() => navigate('/')}
+                sx={{ 
+                  borderColor: "#ddd",
+                  color: "#666",
+                  fontWeight: "bold",
+                  py: 1.5,
+                  "&:hover": { 
+                    borderColor: "#bbb",
+                    bgcolor: "#f5f5f5"
+                  }
+                }}
+              >
+                ยกเลิก
+              </Button>
+              <Button 
+                fullWidth 
+                variant="contained"
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/login');
+                }}
+                sx={{ 
+                  bgcolor: "#ECBD35", 
+                  color: "#000", 
+                  fontWeight: "bold",
+                  py: 1.5,
+                  "&:hover": { 
+                    bgcolor: "#d3a32e" 
+                  }
+                }}
+              >
+                เข้าสู่ระบบ
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
+
+      {/* Overlay ที่ block การใช้งานเมื่อยังไม่ได้ login */}
+      {!isLoggedIn && (
+        <Box 
+          sx={{ 
+            position: "absolute", 
+            top: 0, 
+            left: 0, 
+            width: "100%", 
+            height: "100%", 
+            bgcolor: "rgba(0,0,0,0.3)", 
+            zIndex: 10000,
+            pointerEvents: "auto"
+          }} 
+        />
+      )}
+
       {/* Header */}
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
         <IconButton
@@ -192,6 +344,7 @@ const ProfileInformation = () => {
       <Button
         fullWidth
         variant="outlined"
+        onClick={handleLogout}
         sx={{
           borderColor: "#D3D3D3",
           color: "#000",
