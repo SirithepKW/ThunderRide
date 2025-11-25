@@ -51,77 +51,77 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="*" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/ride" element={<RideFlow />} />
-          <Route path="/earn" element={<Earn />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/profileinformation" element={<Profileinformation />} />
-          <Route path="/coupon" element={<Coupon />} />
-          <Route path="/security" element={<Security />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/previous" element={<Previous />} />
-          <Route path="/notifications" element={<Notification />} />
-        </Routes>
-      </Router>
-    </>
-    // <Router>
-    //   <Routes>
-    //     {/* Login Route */}
-    //     <Route
-    //       path="/login"
-    //       element={
-    //         isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />
-    //       }
-    //     />
+    // <>
+    //   <Router>
+    //     <Routes>
+    //       <Route path="*" element={<LandingPage />} />
+    //       <Route path="/login" element={<Login />} />
+    //       <Route path="/ride" element={<RideFlow />} />
+    //       <Route path="/earn" element={<Earn />} />
+    //       <Route path="/profile" element={<Profile />} />
+    //       <Route path="/about" element={<About />} />
+    //       <Route path="/help" element={<Help />} />
+    //       <Route path="/profileinformation" element={<Profileinformation />} />
+    //       <Route path="/coupon" element={<Coupon />} />
+    //       <Route path="/security" element={<Security />} />
+    //       <Route path="/history" element={<History />} />
+    //       <Route path="/previous" element={<Previous />} />
+    //       <Route path="/notifications" element={<Notification />} />
+    //     </Routes>
+    //   </Router>
+    // </>
+    <Router>
+      <Routes>
+        {/* Login Route */}
+        <Route
+          path="/login"
+          element={
+            isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />
+          }
+        />
 
-    //     {/* Protected Routes */}
-    //     {isLoggedIn ? (
-    //       <>
-    //         {/* Default Route */}
-    //         <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* Protected Routes */}
+        {isLoggedIn ? (
+          <>
+            {/* Default Route */}
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-    //         {/* Main Routes */}
-    //         <Route path="/dashboard" element={<DashboardPage />} />
-    //         <Route path="/live-map" element={<LiveMapPage />} />
+            {/* Main Routes */}
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/live-map" element={<LiveMapPage />} />
 
-    //         {/* Driver Setup Routes */}
-    //         <Route path="/driver-list" element={<DriverSetupPage />} />
-    //         <Route path="/add-driver" element={<AddDriverPage />} />
-    //         <Route path="/edit-driver" element={<EditDriverPage />} />
-    //         <Route path="/identity-request" element={<IdentityRequestPage />} />
+            {/* Driver Setup Routes */}
+            <Route path="/driver-list" element={<DriverSetupPage />} />
+            <Route path="/add-driver" element={<AddDriverPage />} />
+            <Route path="/edit-driver" element={<EditDriverPage />} />
+            <Route path="/identity-request" element={<IdentityRequestPage />} />
 
-    //         {/* Passenger Setup Routes */}
-    //         <Route path="/passenger-list" element={<PassengerListPage />} />
-    //         <Route path="/add-passenger" element={<AddPassengerPage />} />
-    //         <Route path="/edit-passenger" element={<EditPassengerPage />} />
+            {/* Passenger Setup Routes */}
+            <Route path="/passenger-list" element={<PassengerListPage />} />
+            <Route path="/add-passenger" element={<AddPassengerPage />} />
+            <Route path="/edit-passenger" element={<EditPassengerPage />} />
 
-    //         <Route path="/fare-setup" element={<FareSetupPage />} />
-    //         <Route path="/coupon-setup" element={<CouponSetupPage />} />
+            <Route path="/fare-setup" element={<FareSetupPage />} />
+            <Route path="/coupon-setup" element={<CouponSetupPage />} />
 
-    //         <Route path="/transaction" element={<TransactionPage />} />
-    //         <Route path="/safety-overview" element={<SafetyOverviewPage />} />
-    //         <Route path="/chatting" element={<ChattingPage />} />
-    //         <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/transaction" element={<TransactionPage />} />
+            <Route path="/safety-overview" element={<SafetyOverviewPage />} />
+            <Route path="/chatting" element={<ChattingPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
 
 
-    //         {/* Catch all - redirect to dashboard */}
-    //         <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    //       </>
-    //     ) : (
-    //       <>
-    //         {/* Redirect all routes to login if not authenticated */}
-    //         <Route path="*" element={<Navigate to="/login" replace />} />
-    //       </>
-    //     )}
-    //   </Routes>
-    // </Router>
+            {/* Catch all - redirect to dashboard */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </>
+        ) : (
+          <>
+            {/* Redirect all routes to login if not authenticated */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
 }
 
