@@ -103,7 +103,7 @@ const AddPassenger = () => {
     }
 
     alert('Passenger added successfully!');
-    navigate('/passenger-list');
+    navigate('/admin/passenger-list');
   };
 
   const renderUploadBox = (docType, label) => (
@@ -139,7 +139,7 @@ const AddPassenger = () => {
   return (
     <div className="add-passenger-container">
       <div className="add-passenger-header">
-        <button className="back-to-passenger-list" onClick={() => navigate('/passenger-list')}>
+        <button className="back-to-passenger-list" onClick={() => navigate('/admin/passenger-list')}>
           <ArrowLeft size={20} />
         </button>
         <h2>ADD NEW PASSENGER INFORMATION</h2>

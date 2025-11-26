@@ -195,7 +195,7 @@ const DriverList = () => {
               <Trash2 size={18} />
               TRASH DATA
             </button>
-            <button className="add-driver-btn" onClick={() => navigate('/add-driver')}>
+            <button className="add-driver-btn" onClick={() => navigate('/admin/add-driver')}>
               + ADD DRIVER
             </button>
           </div>
@@ -243,7 +243,7 @@ const DriverList = () => {
                           className="doc-unverified-badge"
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate('/identity-request');
+                            navigate('/admin/identity-request');
                           }}
                           style={{ cursor: 'pointer' }}
                         >
@@ -260,7 +260,7 @@ const DriverList = () => {
                       <button 
                         className="action-btn edit-btn" 
                         title="Edit Info"
-                        onClick={() => navigate('/edit-driver', { state: { driver } })}
+                        onClick={() => navigate('/admin/edit-driver', { state: { driver } })}
                       >
                         ✎
                       </button>

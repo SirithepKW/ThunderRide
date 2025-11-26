@@ -155,7 +155,7 @@ const AddDriver = () => {
 
     alert('Driver added successfully!');
     // กลับไปหน้า Driver List
-    navigate('/driver-list');
+    navigate('/admin/driver-list');
   };
 
   const renderUploadBox = (docType, label) => (
@@ -178,7 +178,7 @@ const AddDriver = () => {
             </div>
           )}
         </label>
-        <button 
+        <button
           className="upload-link-small"
           onClick={() => document.getElementById(docType).click()}
         >
@@ -191,7 +191,7 @@ const AddDriver = () => {
   return (
     <div className="add-driver-container">
       <div className="add-driver-header">
-        <button className="back-to-driver-list" onClick={() => navigate('/driver-list')}>
+        <button className="back-to-driver-list" onClick={() => navigate('/admin/driver-list')}>
           <ArrowLeft size={20} />
         </button>
         <h2>ADD NEW DRIVER INFORMATION</h2>
@@ -227,12 +227,12 @@ const AddDriver = () => {
             <div className="date-picker-wrapper">
               <label>Date of Birth <span className="required">*</span></label>
               <input
-                 type="date"
-                 name="dateOfBirth"
-                 value={formData.dateOfBirth}
-                 onChange={handleChange}
-                 className="date-input"
-               />
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className="date-input"
+              />
             </div>
             <div className="form-group-add">
               <label>Gender <span className="required">*</span></label>
@@ -359,10 +359,10 @@ const AddDriver = () => {
 
         <div className="form-group-add full-width" style={{ marginTop: '20px' }}>
           <label>Notes (optional)</label>
-          <textarea 
-            name="notes" 
-            rows="4" 
-            value={formData.notes} 
+          <textarea
+            name="notes"
+            rows="4"
+            value={formData.notes}
             onChange={handleChange}
             placeholder="ใส่หมายเหตุเพิ่มเติม เช่น ประวัติการทำงาน หรือข้อมูลเพิ่มเติมใดๆ"
           ></textarea>

@@ -151,7 +151,7 @@ const PassengerList = () => {
               <Trash2 size={18} />
               TRASH DATA
             </button>
-            <button className="add-passenger-btn" onClick={() => navigate('/add-passenger')}>
+            <button className="add-passenger-btn" onClick={() => navigate('/admin/add-passenger')}>
               + ADD CUSTOMER
             </button>
           </div>
@@ -200,7 +200,7 @@ const PassengerList = () => {
                       <button 
                         className="action-btn edit-btn" 
                         title="Edit Info"
-                        onClick={() => navigate('/edit-passenger', { state: { passenger } })}
+                        onClick={() => navigate('/admin/edit-passenger', { state: { passenger } })}
                       >
                         ✎
                       </button>

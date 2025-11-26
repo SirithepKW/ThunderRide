@@ -12,7 +12,7 @@ const EditPassenger = () => {
   
   // ถ้าไม่มีข้อมูล passenger ให้กลับไปหน้า Passenger List
   if (!passenger) {
-    navigate('/passenger-list');
+    navigate('/admin/passenger-list');
     return null;
   }
 
@@ -108,7 +108,7 @@ const EditPassenger = () => {
     }
     
     alert('Passenger information updated successfully!');
-    navigate('/passenger-list');
+    navigate('/admin/passenger-list');
   };
 
   const renderUploadBox = (docType, label) => (
@@ -144,7 +144,7 @@ const EditPassenger = () => {
   return (
     <div className="add-passenger-container">
       <div className="add-passenger-header">
-        <button className="back-to-passenger-list" onClick={() => navigate('/passenger-list')}>
+        <button className="back-to-passenger-list" onClick={() => navigate('/admin/passenger-list')}>
           <ArrowLeft size={20} />
         </button>
         <h2>EDIT PASSENGER INFORMATION - {passenger.id}</h2>

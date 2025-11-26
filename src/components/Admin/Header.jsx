@@ -48,7 +48,7 @@ const Header = ({ setIsMobileMenuOpen, setActiveMenu }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
-    window.location.href = '/login';
+    window.location.href = '/admin/login';
   };
 
   const handleNotificationClick = (notification) => {
@@ -56,7 +56,7 @@ const Header = ({ setIsMobileMenuOpen, setActiveMenu }) => {
     setNotifications([...notificationData]);
     setShowNotifications(false);
     if (notification.link) {
-      navigate(notification.link);
+      navigate(`/admin/${notification.link}`); // Possible Bug
     }
   };
 

@@ -10,7 +10,7 @@ const EditDriver = ({ driver }) => {
   
   // ถ้าไม่มีข้อมูล driver ให้กลับไปหน้า Driver List
   if (!driver) {
-    navigate('/driver-list');
+    navigate('/admin/driver-list');
     return null;
   }
 
@@ -158,7 +158,7 @@ const EditDriver = ({ driver }) => {
     }
     
     alert('Driver information updated successfully!');
-    navigate('/driver-list');
+    navigate('/admin/driver-list');
   };
 
   const renderUploadBox = (docType, label) => (
@@ -194,7 +194,7 @@ const EditDriver = ({ driver }) => {
   return (
     <div className="add-driver-container">
       <div className="add-driver-header">
-        <button className="back-to-driver-list" onClick={() => navigate('/driver-list')}>
+        <button className="back-to-driver-list" onClick={() => navigate('/admin/driver-list')}>
           <ArrowLeft size={20} />
           Back to Driver List
         </button>
