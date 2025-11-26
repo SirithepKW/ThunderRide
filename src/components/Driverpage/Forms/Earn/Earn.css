@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.body {
+    font-family: "Inter", sans-serif;
+}
+
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.form-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-group {
+  display: grid;
+  gap: 6px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 10px;
+  font-size: 15px;
+  background-color: #f2f2f2;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.input:focus {
+  border-color: #979797;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(230, 230, 230, 0.3);
+}
+
+.listbox {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.option {
+  padding: 8px 10px;
+  cursor: pointer;
+  background: #dbdbdb;
+  border-bottom: 1px solid #eee;
+}
+
+.option:hover {
+  background: #f5f6f8;
+}
+
+.phone-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.phone-prefix {
+  padding: 0 12px;
+  height: 40px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #1f1f23;
+}
+
+.phone-input {
+  flex: 1;
+}
+
+.disclaimer {
+  font-size: 12.5px;
+  color: #6b6b75;
+  line-height: 1.45;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.btn-primary {
+  width: 100%;
+  height: 44px;
+  background: #ECBD35;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* Responsive for Desktop */
+@media screen and (min-width: 1024px) {
+    /* Styles are now handled by the main .container class */
+}
+
+/* Responsive for iPhone 12 Pro (~390px width) */
+@media screen and (max-width: 420px) {
+    .container {
+      margin: 20px;
+      padding: 24px;
+    }
+
+    .btn-primary {   
+      width: 100%;
+    }
+}
+
+/* iPhone 12 Pro - 390x844px */
+@media screen and (max-width: 390px) and (max-height: 844px) {
+  .container {
+    max-width: 358px;
+    margin: 16px auto;
+    padding: 20px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .form-subtitle {
+    font-size: 13px;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+
+  .input {
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    height: 42px;
+    font-size: 14px;
+  }
+}
