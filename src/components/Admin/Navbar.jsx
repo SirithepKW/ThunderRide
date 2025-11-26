@@ -9,30 +9,40 @@ const Navbar = ({ activeMenu, setActiveMenu, isMobileMenuOpen, setIsMobileMenuOp
     email: 'Thunder@admin.com',
     avatar: 'https://i.pravatar.cc/200?img=32'
   };
-  
+
   const menuItems = [
-    { id: 'dashboard', label: 'DASHBOARD', route: '/dashboard' },
-    { id: 'live-map', label: 'LIVE MAP', route: '/live-map' },
-    { id: 'driver-setup', label: 'DRIVER SETUP', submenu: [
-      { id: 'driver-list', label: 'DRIVER LIST', route: '/driver-list' },
-      { id: 'add-new-driver', label: 'ADD NEW DRIVER', route: '/add-driver' },
-      { id: 'identity-request', label: 'IDENTITY REQUEST', route: '/identity-request' }
-    ]},
-    { id: 'passenger-setup', label: 'PASSENGER SETUP', submenu: [
-      { id: 'passenger-list', label: 'PASSENGER LIST', route: '/passenger-list' },
-      { id: 'add-passenger', label: 'ADD PASSENGER', route: '/add-passenger' }
-    ]},
-    { id: 'transactions', label: 'TRANSACTIONS MANAGEMENT',  submenu: [
-      { id: 'fare-setup', label: 'FARE SETUP', route: '/fare-setup' },
-      { id: 'transactions', label: 'TRANSACTIONS', route: '/transaction' }
-    ]},
-    { id: 'promotion', label: 'PROMOTION MANAGEMENT', submenu: [
-      { id: 'coupon-setup', label: 'COUPON SETUP', route: '/coupon-setup'},
-    ]},
-    { id: 'safety', label: 'SAFETY MANAGEMENT', submenu: [
-      { id: 'safety-overview', label: 'SAFETY OVERVIEW', route: '/safety-overview' },
-      { id: 'chatting', label: 'CHATTING', route: '/chatting' }
-    ]}
+    { id: 'dashboard', label: 'DASHBOARD', route: '/admin/dashboard' },
+    { id: 'live-map', label: 'LIVE MAP', route: '/admin/live-map' },
+    {
+      id: 'driver-setup', label: 'DRIVER SETUP', submenu: [
+        { id: 'driver-list', label: 'DRIVER LIST', route: '/admin/driver-list' },
+        { id: 'add-new-driver', label: 'ADD NEW DRIVER', route: '/admin/add-driver' },
+        { id: 'identity-request', label: 'IDENTITY REQUEST', route: '/admin/identity-request' },
+      ]
+    },
+    {
+      id: 'passenger-setup', label: 'PASSENGER SETUP', submenu: [
+        { id: 'passenger-list', label: 'PASSENGER LIST', route: '/admin/passenger-list' },
+        { id: 'add-passenger', label: 'ADD PASSENGER', route: '/admin/add-passenger' }
+      ]
+    },
+    {
+      id: 'transactions', label: 'TRANSACTIONS MANAGEMENT', submenu: [
+        { id: 'fare-setup', label: 'FARE SETUP', route: '/admin/fare-setup' },
+        { id: 'transactions', label: 'TRANSACTIONS', route: '/admin/transaction' }
+      ]
+    },
+    {
+      id: 'promotion', label: 'PROMOTION MANAGEMENT', submenu: [
+        { id: 'coupon-setup', label: 'COUPON SETUP', route: '/admin/coupon-setup' },
+      ]
+    },
+    {
+      id: 'safety', label: 'SAFETY MANAGEMENT', submenu: [
+        { id: 'safety-overview', label: 'SAFETY OVERVIEW', route: '/admin/safety-overview' },
+        { id: 'chatting', label: 'CHATTING', route: '/admin/chatting' }
+      ]
+    }
   ];
 
   const [expandedMenus, setExpandedMenus] = useState(['dashboard', 'driver-setup', 'passenger-setup', 'transactions', 'promotion', 'safety']);
@@ -98,7 +108,7 @@ const Navbar = ({ activeMenu, setActiveMenu, isMobileMenuOpen, setIsMobileMenuOp
   }, []);
 
   const toggleSubmenu = (id) => {
-    setExpandedMenus(prev => 
+    setExpandedMenus(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
@@ -141,12 +151,12 @@ const Navbar = ({ activeMenu, setActiveMenu, isMobileMenuOpen, setIsMobileMenuOp
       </div>
 
       <div className="nav-admin-wrapper" ref={adminPanelRef}>
-        <button 
+        <button
           className={`nav-email ${showAdminPanel ? 'open' : ''}`}
           onClick={handleAdminClick}
           type="button"
         >
-          <img 
+          <img
             src={adminInfo.avatar || defaultAdminInfo.avatar}
             alt="Admin avatar"
             className="nav-admin-avatar"
@@ -186,19 +196,19 @@ const Navbar = ({ activeMenu, setActiveMenu, isMobileMenuOpen, setIsMobileMenuOp
           </div>
         </div>
       </div>
-      
+
       <div className="search-box">
-        <input 
-          type="text" 
-          className="search-input" 
-          placeholder="Search Here" 
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search Here"
         />
       </div>
 
       <nav className="nav-menu">
         {menuItems.map(item => (
           <div key={item.id}>
-            <div 
+            <div
               className={`nav-item ${activeMenu === item.id ? 'active' : ''}`}
               onClick={() => handleMenuClick(item)}
             >
@@ -208,7 +218,7 @@ const Navbar = ({ activeMenu, setActiveMenu, isMobileMenuOpen, setIsMobileMenuOp
             {item.submenu && expandedMenus.includes(item.id) && (
               <div className="submenu">
                 {item.submenu.map(sub => (
-                  <div 
+                  <div
                     key={sub.id}
                     className={`submenu-item ${activeMenu === sub.id ? 'active' : ''}`}
                     onClick={() => handleSubmenuClick(sub)}

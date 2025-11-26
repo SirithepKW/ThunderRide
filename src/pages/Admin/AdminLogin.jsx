@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import taxiImg from "../../assets/nyc-yellow-taxi-in-times-square-hero.webp";
 import "../../styles/Admin/Login.css";
 
-export default function Login({ setIsLoggedIn }) {
+export default function AdminLogin({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  
-  {/* เซทรหัสผ่านไว้ */}
+
+  {/* เซทรหัสผ่านไว้ */ }
   const handleLogin = (e) => {
     e.preventDefault();
     if (email === "Thunder@admin.com" && password === "Thunder888") {
@@ -29,15 +29,15 @@ export default function Login({ setIsLoggedIn }) {
       localStorage.setItem("adminEmail", email);
       localStorage.setItem("adminProfile", JSON.stringify(adminProfile));
       setIsLoggedIn(true);
-      navigate("/dashboard");
+      navigate("/admin/dashboard");
     } else {
       alert("Invalid email or password");
     }
   };
 
 
-  {/* พื้นที่ลอคอิน */}
-  {/* ภาพ taxi */}
+  {/* พื้นที่ลอคอิน */ }
+  {/* ภาพ taxi */ }
   return (
     <div className="login-container">
       <div className="login-card">
@@ -51,7 +51,7 @@ export default function Login({ setIsLoggedIn }) {
             <h1><span>THUNDER</span> RIDE</h1>
             <p className="login-subtitle">Login with Email</p>
           </div>
-        {/* ใส่เมลจ้า */}
+          {/* ใส่เมลจ้า */}
           <div className="input-box">
             <input
               type="email"
